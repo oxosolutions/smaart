@@ -2,19 +2,29 @@
 # Build configuration for Circle CI
 #
 
-general:
-    artifacts:
-        - /home/ubuntu/oxo/app/build/outputs/apk/
 
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
+		
+machine:
+  node:
+    version: v0.10.26
+  ruby:
+    version: 2.1.2
 
 dependencies:
-    override:
-        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
-        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+    post:
+    - npm install -g gulp
+    - bower install
 
+deployment:
+    branch: development
+    commands:
+        - npm install -g cordova ionic
+        - ionic upload --email sgs.sandhu@gmail.com --password s0ftware
+		
+		
 test:
     override:
         - (./gradlew assemble):
