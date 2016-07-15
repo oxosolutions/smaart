@@ -2,27 +2,21 @@
 # Build configuration for Circle CI
 #
 
-
-
 machine:
-    node:
-        version: v0.10.26
-    ruby:
-        version: 2.1.2
-
+node:
+version: v0.10.26
+ruby:
+version: 2.1.2
 dependencies:
-    post:
-        - npm install -g gulp
-        - bower install
-
+post:
+- npm install -g gulp
+- bower install
 deployment:
-    branch: development
-    commands:
-        - npm install -g cordova ionic
-        - ionic upload --email sgs.sandhu@gmail.com --password s0ftware
-		
-		
+branch: development
+commands:
+- npm install -g cordova ionic
+- ionic upload --email sgs.sandhu@gmail.com --password s0ftware
 test:
-    override:
-        - (./gradlew assemble):
-            timeout: 360
+override:
+- (./gradlew assemble):
+timeout: 360
