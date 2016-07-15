@@ -3,20 +3,17 @@
 #
 
 
+
 machine:
-    environment:
-        ANDROID_HOME: /usr/local/android-sdk-linux
-		
-machine:
-  node:
-    version: v0.10.26
-  ruby:
-    version: 2.1.2
+    node:
+        version: v0.10.26
+    ruby:
+        version: 2.1.2
 
 dependencies:
     post:
-    - npm install -g gulp
-    - bower install
+        - npm install -g gulp
+        - bower install
 
 deployment:
     branch: development
