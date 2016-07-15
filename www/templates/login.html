@@ -1,0 +1,14 @@
+<ion-view view-title="User Login">
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Username" ng-model="username">
+      </label>
+      <label class="item item-input">
+        <input type="password" placeholder="Password" ng-model="password">
+      </label>
+      <button class="button button-block button-positive" ng-click="login(username, password)">Login Now</button>
+    </div>
+    <button ng-click="clearData()" class="button button-block button-positive animate-if">Activate Application</button>
+  </ion-content>
+</ion-view>

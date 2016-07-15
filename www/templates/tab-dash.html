@@ -1,0 +1,22 @@
+<ion-view view-title="Survey">
+  <ion-content class="padding">
+    <div class="question-text">
+      <h5 ng-bind-html="question"></h5>
+    </div>
+    <div class="question-desc" style="font-style: italic;">
+        <h6>{{description}}</h6>
+    </div>
+    <dynamic-element message='htmlString' ng-bind-html="ans"></dynamic-element>
+    <div class="buttons" style="text-align:center; margin-top:10%;">
+      <button class="button button-positive">
+        &nbsp; Prev &nbsp;
+      </button>
+      <button class="button button-assertive" >
+       &nbsp; Stop &nbsp;
+      </button>
+      <button class="button button-balanced" ng-click="next({{qid}})">
+       &nbsp; Next &nbsp;
+      </button>
+    </div>
+  </ion-content>
+</ion-view>
