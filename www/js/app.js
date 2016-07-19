@@ -36,6 +36,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','L
   });
 })
 
+.constant('config', {
+      text_login: 'Login Now',
+      text_activation :'Activate Application',
+      text_dashboard : 'Dashboard',
+      text_startSuray : 'Start Survey',
+      text_surveyList : 'Survey List',
+      text_logout : 'Logout',
+      text_survey : 'Survey',
+      text_userLogin : 'User Login',
+      text_next : 'Next',
+      text_stop: 'Stop',
+      text_prev: 'Prev',
+      text_stop_survey_title: 'Stop Survey',
+      text_stop_survey_template: 'Are you sure you want to stop that survey?',
+      text_survey_yes: 'Yes',
+      text_survey_no: 'No',
+      text_activate_success: 'Activate Successfully!',
+      text_fill_error: 'Please fill all fields',
+      text_wrong_user: 'Wrong user details!',
+      text_signout_success: 'Sign out successfully',
+      text_select_answer: 'Please Select Answer',
+      text_survel_list: 'Survey List'
+    })
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -52,54 +75,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','L
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
+
+      .state('dashboard', {
+      url: '/dashboard',
+      templateUrl: 'templates/tab-dashboard.html',
+      controller: 'HomeCtrl'
+    })
+    .state('survey', {
+	    url: '/survey/:qid',
+	    templateUrl: 'templates/tab-dash.html',
+	    controller: 'SurveyCtrl'
+	  })
+    .state('survey-list',{
+    	cache: false,
+		url:'/survey',
+		templateUrl: 'templates/servey-list.html',
+		controller: 'ServeyListCtrl'
+    })
       
   // setup an abstract state for the tabs directive
     .state('tab', {
       url: '/tab',
       abstract: true,
       templateUrl: 'templates/tabs.html'
-    })
+    });
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash/:qid',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

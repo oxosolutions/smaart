@@ -1,14 +1,16 @@
-<ion-view view-title="User Login">
+
+<ion-view view-title="{{user_login}}">
   <ion-content class="padding">
+    <img src="img/icon.png" ng-style="{'width':'75%','text-align':'center','margin-left':'11%','margin-bottom':'8%'}" />
     <div class="list">
-      <label class="item item-input">
+      <label class="item item-input border">
         <input type="text" placeholder="Username" ng-model="username">
       </label>
-      <label class="item item-input">
-        <input type="password" placeholder="Password" ng-model="password">
+      <label class="item item-input border">
+        <input type="password" placeholder="Password" ng-model="password" >
       </label>
-      <button class="button button-block button-positive" ng-click="login(username, password)">Login Now</button>
+      <button class="button button-block button-positive" ion-ripple ng-click="login(username, password)">{{login_now}}</button>
     </div>
-    <button ng-click="clearData()" class="button button-block button-positive animate-if">Activate Application</button>
+    <button ng-click="clearData()" class="button button-block button-positive animate-if" ion-ripple>{{activate_application}}</button>
   </ion-content>
 </ion-view>

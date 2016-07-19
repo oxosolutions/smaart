@@ -1,21 +1,24 @@
-<ion-view view-title="Survey">
+
+<div ng-include src="'templates/header.html'"></div>
+<ion-view view-title="Survey" ng-style="{'margin-top':'10%'}">
   <ion-content class="padding">
     <div class="question-text">
       <h5 ng-bind-html="question"></h5>
     </div>
-    <div class="question-desc" style="font-style: italic;">
-        <h6>{{description}}</h6>
+    <div class="question-desc" ng-bind-html="description" style="font-style: italic;">
+        
     </div>
     <dynamic-element message='htmlString' ng-bind-html="ans"></dynamic-element>
     <div class="buttons" style="text-align:center; margin-top:10%;">
-      <button class="button button-positive">
-        &nbsp; Prev &nbsp;
+      
+      <button class="button button-positive" ion-ripple ng-click="GoBack()">
+        &nbsp; {{prev}} &nbsp;
       </button>
-      <button class="button button-assertive" >
-       &nbsp; Stop &nbsp;
+      <button class="button button-assertive" ion-ripple  ng-click="GoDashboard()">
+       &nbsp; {{stop}} &nbsp;
       </button>
-      <button class="button button-balanced" ng-click="next({{qid}})">
-       &nbsp; Next &nbsp;
+      <button class="button button-balanced" ion-ripple ng-click="next({{qid}})">
+       &nbsp; {{nxt}} &nbsp;
       </button>
     </div>
   </ion-content>
