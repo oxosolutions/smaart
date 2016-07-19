@@ -7,7 +7,7 @@
         <input type="text" placeholder="Username" ng-model="username">
       </label>
       <label class="item item-input border">
-        <input type="password" placeholder="Password" ng-model="password" >
+        <input type="password" placeholder="Password" ng-model="password" press-enter="login(username, password)">
       </label>
       <button class="button button-block button-positive" ion-ripple ng-click="login(username, password)">{{login_now}}</button>
     </div>

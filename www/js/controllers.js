@@ -29,6 +29,19 @@ angular.module('starter.controllers', ['ionMDRipple'])
       }
   }])
 
+.directive('pressEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.pressEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+})
+
 .controller('SurveyCtrl', function($scope, $state, $stateParams, $sce, localStorageService, config, $ionicHistory, $rootScope, $ionicLoading, $ionicPopup, $filter) {
 
     $scope.nxt =  config.text_next;
@@ -53,12 +66,18 @@ angular.module('starter.controllers', ['ionMDRipple'])
     var paramQid;
     var QuestionID;
     var QuestionKey;
+    var validation;
+    var pattern;
+    var matchWith;
     angular.forEach(QuestData.data, function(value, key) {
         if(value.question_order == questionOrder){
 
             paramQid = key;
             QuestionID = value.question_id;
             QuestionKey = value.question_key;
+            validation = value.validations;
+            pattern = value.pattern;
+            matchWith = value.match_with;
         }
         //console.log(value.question_order+' '+key);
     });
@@ -98,7 +117,7 @@ angular.module('starter.controllers', ['ionMDRipple'])
 
         case'text':
         types = 'text';
-        finalAnswers = '<input type="text" name="" class="text_answer" value="" ng-click="assignId($event)" style="border:1px solid #000;" data-id="'+QuestData.data[paramQid].answers[0].option_next+'" />';
+        finalAnswers = '<input type="text" name="" ng-model="text_answer" class="text_answer" value="" ng-click="assignId($event)" style="border:1px solid #000;" data-id="'+QuestData.data[paramQid].answers[0].option_next+'" />';
         $scope.htmlString = finalAnswers;
         $scope.question = $sce.trustAsHtml(QuestData.data[paramQid].question_text);
         $scope.description = $sce.trustAsHtml(QuestData.data[paramQid].question_desc);
@@ -209,12 +228,61 @@ angular.module('starter.controllers', ['ionMDRipple'])
                     break;
 
                     case'text':
-                      var OneAnswer = {};
-                      OneAnswer['question_id'] = QuestionID;
-                      OneAnswer['question_key'] = QuestionKey;
-                      OneAnswer['answer'] = $('.text_answer').val();
-                      AllAnswers[QuestionID] = OneAnswer;
-                      console.log(AllAnswers);
+                      if($scope.$$childHead.$$childHead.text_answer !== undefined){
+
+                          var textValue = $scope.$$childHead.$$childHead.text_answer;
+                          console.log(textValue);
+                          
+                          if(validation != '' && validation == 'pattern'){
+                            
+                              if(textValue.match(pattern)){
+                                  if(matchWith!=''){
+
+                                      var matchedQids = matchWith.match(/[^\[\]]+(?=])/g);
+                                      if(AllAnswers[matchedQids[0]].answer == textValue){
+
+                                          console.log('after match pattern');
+                                          var OneAnswer = {};
+                                          OneAnswer['question_id'] = QuestionID;
+                                          OneAnswer['question_key'] = QuestionKey;
+                                          OneAnswer['answer'] = $scope.$$childHead.$$childHead.text_answer;
+                                          AllAnswers[QuestionID] = OneAnswer;
+                                          console.log(AllAnswers);
+                                      }else{
+
+                                          $ionicLoading.show({ template: 'Latitude Not matched!', noBackdrop: true, duration: 2000 });
+                                          return false;
+                                      }
+                                  }else{
+
+                                      console.log('after match pattern');
+                                      var OneAnswer = {};
+                                      OneAnswer['question_id'] = QuestionID;
+                                      OneAnswer['question_key'] = QuestionKey;
+                                      OneAnswer['answer'] = $scope.$$childHead.$$childHead.text_answer;
+                                      AllAnswers[QuestionID] = OneAnswer;
+                                      console.log(AllAnswers);
+                                  }
+
+                              }else{
+
+                                  $ionicLoading.show({ template: 'Please enter correct value', noBackdrop: true, duration: 2000 });
+                                  return false;
+                              }
+                          }else{
+
+                              var OneAnswer = {};
+                              OneAnswer['question_id'] = QuestionID;
+                              OneAnswer['question_key'] = QuestionKey;
+                              OneAnswer['answer'] = $('.text_answer').val();
+                              AllAnswers[QuestionID] = OneAnswer;
+                              console.log(AllAnswers);
+                          }
+                      }else{
+
+                          $ionicLoading.show({ template: 'Please enter the value', noBackdrop: true, duration: 2000 });
+                          return false;
+                      }
                     break;
 
                     case'number':
@@ -235,10 +303,18 @@ angular.module('starter.controllers', ['ionMDRipple'])
                       console.log(AllAnswers);
                     break;
 
-                }
-            });
+                    case'message':
+                      var OneAnswer = {};
+                      OneAnswer['question_id'] = QuestionID;
+                      OneAnswer['question_key'] = QuestionKey;
+                      OneAnswer['answer'] = 'Text Message'
+                      AllAnswers[QuestionID] = OneAnswer;
+                      console.log(AllAnswers);
 
-            $state.go('survey',{'qid':$scope.$$childHead.qid});
+                }
+
+                $state.go('survey',{'qid':$scope.$$childHead.qid});
+            });
         }
     };
 
@@ -396,7 +472,7 @@ angular.module('starter.controllers', ['ionMDRipple'])
                title: 'Unable to logout',
                template: 'Unable to logout while survey is running!'
              });
-              
+
           }else{
 
               localStorageService.clearAll();
